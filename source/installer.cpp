@@ -46,6 +46,9 @@ int main(int argc, char* argv[]){
 	}
 	if(argc > 1 && std::string(argv[1]) == "reinstall")
 		uninstall();
+    std::string currPath = "./";
+    if(argc > 1 && std::string(argv[1]) != "reinstall")
+        currPath = std::string(argv[1]);
 	std::string root = getHomedir() + "/" + mainDir;
 	if(exists(root)){
 		std::cout << "===================== ERROR =====================" << std::endl;
@@ -54,7 +57,9 @@ int main(int argc, char* argv[]){
 		std::cout << "Remove " << root << " before installation" << std::endl;
 		return -1;
 	}
-	std::string cmd = "tar -xvzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
+    std::string cmd = "wget --no-check-certificate -P " + currPath + " https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz";
+	system(cmd.c_str());
+    cmd = "tar -xvzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
 	system(cmd.c_str());
 	std::string bash = getHomedir() + "/" + ".bashrc";
     std::string addedPath = "export PATH=\"" + root + "/bin:$PATH\"";
