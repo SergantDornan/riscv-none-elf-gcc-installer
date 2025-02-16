@@ -1,9 +1,4 @@
 #include "installer.h"
-//sudo apt update
-//sudo apt install -y --no-install-recommends ca-certificates git make python3 openocd picocom
-//tar -xvzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz
-
-
 std::string getHomedir(){
     const char* homeDir = getenv("HOME");
     if (homeDir) {
@@ -19,6 +14,20 @@ void uninstall(){
     std::string root = getHomedir() + "/" + mainDir;
     std::string cmd = "rm -rf " + root;
     system(cmd.c_str());
+    std::string path = "export PATH=\"" + root + "/bin:$PATH\"";
+    std::string bash = getHomedir() + "/" + ".bashrc";
+    std::string line;
+    std::vector<std::string> v;
+    std::ifstream file(bash);
+    while(std::getline(file,line)){
+        if(line != path)
+            v.push_back(line);
+    }
+    file.close();
+    std::ofstream newfile(bash);
+    for(int i = 0; i < v.size(); ++i)
+        newfile << v[i] << std::endl;
+    newfile.close();
     std::cout << "xpack-riscv-none-elf-gcc-14.2.0-3 has been removed from your computer" << std::endl;
 }
 bool checkProgram(const std::string& programName) {
@@ -47,6 +56,13 @@ int main(int argc, char* argv[]){
 	}
 	std::string cmd = "tar -xvzf xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
 	system(cmd.c_str());
+	std::string bash = getHomedir() + "/" + ".bashrc";
+    std::string addedPath = "export PATH=\"" + root + "/bin:$PATH\"";
+    std::ofstream bshrc(bash, std::ios::app);
+    bshrc << addedPath << std::endl;
+    bshrc.close();
+    system(addedPath.c_str());
+	//export PATH="/home/sergantdornan/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
 	std::cout << "===================== xpack-riscv-none-elf-gcc-14.2.0-3 has been installed =====================" << std::endl;
 	return 0;
 }

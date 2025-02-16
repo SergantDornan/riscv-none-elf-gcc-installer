@@ -2,8 +2,6 @@
 
 This program installs riscv-none-elf-gcc compiler
 
-The program does not configure environment variables
-
 # installation
 
 ```
