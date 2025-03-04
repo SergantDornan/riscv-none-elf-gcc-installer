@@ -1,4 +1,6 @@
 #include "installer.h"
+#include "exportPath.h"
+const std::string bin = getHomedir() + "/" + mainDir + "/bin";
 std::string getHomedir(){
     const char* homeDir = getenv("HOME");
     if (homeDir) {
@@ -14,20 +16,7 @@ void uninstall(){
     std::string root = getHomedir() + "/" + mainDir;
     std::string cmd = "rm -rf " + root;
     system(cmd.c_str());
-    std::string path = "export PATH=\"" + root + "/bin:$PATH\"";
-    std::string bash = getHomedir() + "/" + ".bashrc";
-    std::string line;
-    std::vector<std::string> v;
-    std::ifstream file(bash);
-    while(std::getline(file,line)){
-        if(line != path)
-            v.push_back(line);
-    }
-    file.close();
-    std::ofstream newfile(bash);
-    for(int i = 0; i < v.size(); ++i)
-        newfile << v[i] << std::endl;
-    newfile.close();
+    removePath(bin);
     std::cout << "xpack-riscv-none-elf-gcc-14.2.0-3 has been removed from your computer" << std::endl;
 }
 bool checkProgram(const std::string& programName) {
@@ -38,7 +27,6 @@ bool checkProgram(const std::string& programName) {
 bool exists(const std::string& path){
 	return std::filesystem::exists(path);
 }
-const std::string root = getHomedir() + "/builder";
 int main(int argc, char* argv[]){
 	if(argc > 1 && std::string(argv[1]) == "uninstall"){
 		uninstall();
@@ -61,13 +49,9 @@ int main(int argc, char* argv[]){
 	system(cmd.c_str());
     cmd = "tar -xvzf " + currPath + "/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
 	system(cmd.c_str());
-	std::string bash = getHomedir() + "/" + ".bashrc";
-    std::string addedPath = "export PATH=\"" + root + "/bin:$PATH\"";
-    std::ofstream bshrc(bash, std::ios::app);
-    bshrc << addedPath << std::endl;
-    bshrc.close();
-    system(addedPath.c_str());
+    addPath(bin);
 	//export PATH="/home/sergantdornan/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
+    //set -U fish_user_paths "/opt/mycompiler/bin" $fish_user_paths
 	std::cout << "===================== xpack-riscv-none-elf-gcc-14.2.0-3 has been installed =====================" << std::endl;
 	return 0;
 }
