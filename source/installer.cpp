@@ -1,5 +1,6 @@
 #include "installer.h"
 #include "exportPath.h"
+const std::string tarName = "xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz";
 const std::string bin = getHomedir() + "/" + mainDir + "/bin";
 void uninstall(){
     std::string root = getHomedir() + "/" + mainDir;
@@ -28,10 +29,17 @@ int main(int argc, char* argv[]){
 		std::cout << "Remove " << root << " before installation" << std::endl;
 		return -1;
 	}
-    std::string cmd = "wget --no-check-certificate -P " + cd + " https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz";
-	system(cmd.c_str());
-    cmd = "tar -xvzf " + cd + "/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
-	system(cmd.c_str());
+	std::string cmd = "";
+	if(!exists(getHomedir() + "/" + tarName)){
+    	cmd = "wget --no-check-certificate -P " + cd + " https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz";
+		system(cmd.c_str());
+		cmd = "tar -xvzf " + cd + "/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
+		system(cmd.c_str());
+	}
+	else{
+		cmd = "tar -xvzf " + getHomedir() + "/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz -C " + getHomedir();
+		system(cmd.c_str());
+	}
     addPath(bin);
 	//export PATH="/home/sergantdornan/xpack-riscv-none-elf-gcc-14.2.0-3/bin:$PATH"
     //set -U fish_user_paths "/opt/mycompiler/bin" $fish_user_paths
