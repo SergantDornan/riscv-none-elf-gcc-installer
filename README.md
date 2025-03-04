@@ -5,13 +5,13 @@ This program installs riscv-none-elf-gcc compiler
 # installation
 
 ```
-./install # install compiler to homedir/riscv
+make install # install compiler to homedir
 ```
 
 ```
-./install uninstall # uninstall compiler
+./installer uninstall # uninstall compiler
 ```
 
 ```
-./install reinstall # reinstall compiler
+./installer reinstall # reinstall compiler
 ```

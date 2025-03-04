@@ -1,4 +1,4 @@
-OUTPUT=./install
+OUTPUT=./installer
 INCDIR=./include
 SOURCEDIR=./source
 deps=./depsAndObjects
@@ -13,6 +13,9 @@ OBJECTS=$(patsubst $(SOURCEDIR)%.cpp, $(deps)%.o, $(CFILES))
 DEPFILES= $(patsubst $(SOURCEDIR)%.cpp, $(deps)%.d, $(CFILES))  
 
 all:$(OUTPUT)
+
+install:$(OUTPUT)
+	@./installer
 
 $(OUTPUT):$(OBJECTS)
 	$(CPPC) $^ -o $@
