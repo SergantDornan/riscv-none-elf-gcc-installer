@@ -59,7 +59,7 @@ void removePath(const std::string& path){
     	std::ifstream file(config[i]);
     	while(std::getline(file,l)){
         	if(l != line)
-            	v.push_back(line);
+            	v.push_back(l);
     	}
     	file.close();
     	std::ofstream newfile(config[i]);
