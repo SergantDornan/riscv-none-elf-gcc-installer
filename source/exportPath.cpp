@@ -32,6 +32,17 @@ void addPath(const std::string& path){
 			std::cout << "exportPath.cpp: getLine" << std::endl;
 			return;
 		}
+		std::ifstream in(config[i]);
+		bool isLine = false;
+		std::string l;
+		while(std::getline(in, l)){
+			if(l == line){
+				isLine = true;
+				break;
+			}
+		}
+		in.close();
+		if(isLine) continue;
 		std::ofstream bshrc(config[i], std::ios::app);
     	bshrc << line << std::endl;
     	bshrc.close();
